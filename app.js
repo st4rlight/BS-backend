@@ -34,6 +34,8 @@ app.use(config.getApiPath('recite'), router.recite);
 app.use(config.getApiPath('review'), router.review);
 app.use(config.getApiPath('exam'), router.exam);
 app.use(config.getApiPath('favorite'), router.favorite);
+app.use(config.getApiPath('home'), router.home);
+
 // app.use(config.getApiPath('plan'), router.plan);
 // Error handling
 // app.use((req, res, next) => {
