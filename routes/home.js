@@ -8,7 +8,7 @@ const Axios         = require('axios');
 
 
 router.get('/everyday', (req, res) => {
-    Axios.get('http://open.iciba.com/dsapi')
+    Axios.get('http://open.iciba.com/dsapi/')
         .then( (myres) => {
             var responseJSON = JSON.stringify({
                 info: myres.data

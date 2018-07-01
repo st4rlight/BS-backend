@@ -7,7 +7,7 @@ const moment        = require('moment')
 const Axios         = require('axios');
 
 router.get('/allwords/:user_id', (req, res) => {
-    var sql = "select * from favorite where user_id = ? ";
+    var sql = "select * from Favorite where user_id = ? ";
     db.query(sql, req.params['user_id'], function(results, fields){
         var responseJSON = JSON.stringify({
             tableData: results
@@ -19,7 +19,7 @@ router.get('/allwords/:user_id', (req, res) => {
 });
 
 router.put('/delete', (req, res) => {
-    var sql = "delete from favorite where user_id = ? and word = ?";
+    var sql = "delete from Favorite where user_id = ? and word = ?";
     db.query(sql, [req.body['user_id'], req.body['word']], function(results, fields){
         if( results.affectedRows !== 0){
             res.sendStatus(200);
@@ -35,7 +35,7 @@ router.post('/new_word/:user_id', (req, res) => {
     var word    = req.body['word'];
     var meaning = req.body['meaning'];
 
-    var sql = "INSERT INTO favorite VALUES (?, ?, ?)";
+    var sql = "INSERT INTO Favorite VALUES (?, ?, ?)";
     db.query(sql, [ user_id, word, meaning ], function(results, fields){
         if(results.affectedRows !== 0)
             res.sendStatus(200);
@@ -50,7 +50,7 @@ router.put('/edit_word/:user_id', (req, res) => {
     var meaning  = req.body['meaning'];
     var old_word = req.body['old_word'];
 
-    var sql = "UPDATE favorite SET word = ?, meaning = ? where user_id = ? and word = ?";
+    var sql = "UPDATE Favorite SET word = ?, meaning = ? where user_id = ? and word = ?";
 
     db.query(sql, [ new_word, meaning, user_id, old_word ], function(results, fields){
         if(results.affectedRows !== 0)
