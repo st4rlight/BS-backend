@@ -56,8 +56,8 @@ CREATE TABLE IF NOT EXISTS `Plans` (
   `plan_id` BIGINT AUTO_INCREMENT PRIMARY KEY,
   `user_id` BIGINT,
   `collect_id` INT,
-  `start_date` Timestamp NOT NULL,
-  `end_date` Timestamp NOT NULL,
+  `start_date` Timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `end_date` Timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `progress` INT default 0,
   FOREIGN KEY (user_id) REFERENCES User(user_id),
   FOREIGN KEY (collect_id) REFERENCES Collections(collect_id)
@@ -91,9 +91,6 @@ CREATE TABLE IF NOT EXISTS `ReviewTrace` (
   FOREIGN KEY (plan_id) REFERENCES Plans(plan_id),
   PRIMARY KEY (user_id, plan_id, date)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
 # 背诵记录, 每个用户独立一张表，注册的时候创建该表，命名方式为Record_[user_name]
 # CREATE TABLE IF NOT EXISTS `Record`(
 #   collect_id INT,
@@ -113,7 +110,6 @@ CREATE TABLE IF NOT EXISTS `Record_test`(
   is_finish BOOL,
   PRIMARY KEY (collect_id, word)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 
 # 测试记录
 CREATE TABLE IF NOT EXISTS `ExamTrace`(
@@ -153,7 +149,7 @@ INSERT INTO User (username, passwd, email) VALUES ( 'test', PASSWORD('test'), 'z
 INSERT INTO Collections (collect, total) VALUES ( 'CET4', 3662 ), ( 'CET6', 2089 );
 
 ### 四级单词库
-INSERT into cet4(word, meaning) VALUES
+INSERT into CET4(word, meaning) VALUES
 ( 'vapour' ,   'n.汽，蒸气' ),
 ( 'enlarge' ,   'vt.扩大，扩展；放大' ),
 ( 'sphere' ,   'n.球，圆体；范围' ),
@@ -3819,7 +3815,7 @@ INSERT into cet4(word, meaning) VALUES
 
 
 ### 六级单词库
-INSERT into cet6(word, meaning) VALUES
+INSERT into CET6 (word, meaning) VALUES
 (   'photoelectric'      ,  'a.光电的'    ) ,
 (   'correctly'          ,  'ad.正确地,恰当地'    ) ,
 (   'shrill'             ,  'a.尖声的 vt.尖声地叫'    ) ,
