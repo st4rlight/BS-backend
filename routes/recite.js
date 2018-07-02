@@ -202,30 +202,41 @@ router.post('/record_random_trace', (req, res) =>　{
 
 });
 router.post('/record_plan_trace', (req, res) =>　{
-    var info = req.body;
-    var sql = 'select * from DayTrace where user_id = ? and plan_id = ? and date = ?';
-
-    db.query(sql, [info.user_id, info.plan_id, info.date], function(results, fields){
-        if(results.length !== 0){
-            var update = 'update DayTrace set number = number + ?, date = ? where user_id = ? and plan_id = ? and date = ?';
-            db.query(update, [info.number, info.date, info.user_id, info.plan_id, info.date],function(results2, fields2){
-                if( results2.affectedRows !== 0)
-                    res.sendStatus(200);
-                else  
-                    res.sendStatus(204);
+    var mysql = "update Plans set progress = progress + ? where plan_id = ? ";
+    db.query(mysql, [req.body['number'],req.body['plan_id']], function(results0, fields0){
+        if( results0.affectedRows !==0 ){
+            var info = req.body;
+            var sql = 'select * from DayTrace where user_id = ? and plan_id = ? and date = ?';
+        
+        
+            db.query(sql, [info.user_id, info.plan_id, info.date], function(results, fields){
+                if(results.length !== 0){
+                    var update = 'update DayTrace set number = number + ?, date = ? where user_id = ? and plan_id = ? and date = ?';
+                    db.query(update, [info.number, info.date, info.user_id, info.plan_id, info.date],function(results2, fields2){
+                        if( results2.affectedRows !== 0)
+                            res.sendStatus(200);
+                        else  
+                            res.sendStatus(204);
+                    });
+        
+                } else{
+                    var insert = 'insert into DayTrace VALUES( ?, ?, ?, ?)' ;
+                    db.query(insert, [info.user_id, info.plan_id, info.date, info.number ], function(results3, fields3){
+                        if(  results3.affectedRows !== 0 )
+                            res.sendStatus(200);
+                        else
+                            res.sendStatus(204);    
+                    });
+        
+                }
             });
-
+        
         } else{
-            var insert = 'insert into DayTrace VALUES( ?, ?, ?, ?)' ;
-            db.query(insert, [info.user_id, info.plan_id, info.date, info.number ], function(results3, fields3){
-                if(  results3.affectedRows !== 0 )
-                    res.sendStatus(200);
-                else
-                    res.sendStatus(204);    
-            });
-
+            res.sendStatus(204);
         }
     });
+    
+ 
 
 });
 
